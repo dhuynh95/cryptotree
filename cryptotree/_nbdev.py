@@ -8,9 +8,21 @@ index = {"shift_bit_eps": "00_core.ipynb",
          "BitComparison": "00_core.ipynb",
          "create_test_cases_x": "00_core.ipynb",
          "create_test_cases_y": "00_core.ipynb",
+         "compute_leaves": "00_core.ipynb",
+         "create_linear_node_comparator": "00_core.ipynb",
          "create_parent_of": "00_core.ipynb",
          "create_leaf_to_path": "00_core.ipynb",
-         "path_to_weight": "00_core.ipynb"}
+         "path_to_weight": "00_core.ipynb",
+         "sigmoid_path_to_linear": "00_core.ipynb",
+         "sigmoid_linear_leaf_matcher": "00_core.ipynb",
+         "sigmoid_classification_head": "00_core.ipynb",
+         "DecisionTree": "00_core.ipynb",
+         "DEFAULT_POLYNOMIAL_DEGREE": "00_core.ipynb",
+         "DEFAULT_DILATATION_FACTOR": "00_core.ipynb",
+         "DEFAULT_BOUND": "00_core.ipynb",
+         "raise_error_wrong_tree": "00_core.ipynb",
+         "SigmoidDecisionTree": "00_core.ipynb",
+         "SigmoidClassificationTree": "00_core.ipynb"}
 
 modules = ["core.py"]
 
