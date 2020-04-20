@@ -2,17 +2,18 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"shift_bit_eps": "00_core.ipynb",
-         "create_base_vectors": "00_core.ipynb",
-         "create_linear_system": "00_core.ipynb",
-         "BitComparison": "00_core.ipynb",
-         "create_test_cases_x": "00_core.ipynb",
-         "create_test_cases_y": "00_core.ipynb",
+index = {"shift_bit_eps": "01_sigmoid.ipynb",
+         "create_base_vectors": "01_sigmoid.ipynb",
+         "create_linear_system": "01_sigmoid.ipynb",
+         "BitComparison": "01_sigmoid.ipynb",
          "compute_leaves": "00_core.ipynb",
          "create_linear_node_comparator": "00_core.ipynb",
          "create_parent_of": "00_core.ipynb",
          "create_leaf_to_path": "00_core.ipynb",
-         "path_to_weight": "00_core.ipynb",
+         "tanh_path_to_weight": "00_core.ipynb",
+         "tanh_path_to_linear": "00_core.ipynb",
+         "tanh_linear_leaf_matcher": "00_core.ipynb",
+         "sigmoid_path_to_weight": "01_sigmoid.ipynb",
          "sigmoid_path_to_linear": "00_core.ipynb",
          "sigmoid_linear_leaf_matcher": "00_core.ipynb",
          "sigmoid_classification_head": "00_core.ipynb",
@@ -22,9 +23,15 @@ index = {"shift_bit_eps": "00_core.ipynb",
          "DEFAULT_BOUND": "00_core.ipynb",
          "raise_error_wrong_tree": "00_core.ipynb",
          "SigmoidDecisionTree": "00_core.ipynb",
-         "SigmoidClassificationTree": "00_core.ipynb"}
+         "SigmoidClassificationTree": "00_core.ipynb",
+         "tanh_classification_head": "00_core.ipynb",
+         "TanhDecisionTree": "00_core.ipynb",
+         "TanhClassificationTree": "00_core.ipynb",
+         "check_output_range": "00_core.ipynb",
+         "register_output_check": "00_core.ipynb"}
 
-modules = ["core.py"]
+modules = ["core.py",
+           "sigmoid.py"]
 
 doc_url = "https://dhuynh95.github.io/cryptotree/"
 
