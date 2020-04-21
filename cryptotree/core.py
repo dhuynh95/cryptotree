@@ -16,6 +16,8 @@ import torch.nn as nn
 import torch
 from sklearn.tree import BaseDecisionTree
 from functools import partial
+from numpy.polynomial.chebyshev import Chebyshev
+import matplotlib.pyplot as plt
 
 def shift_bit_eps(bit: int, eps: float = 0.5):
     assert bit in [0,1], "Bit must be 0 or 1"
@@ -79,30 +81,27 @@ class BitComparison(nn.Module):
 # Cell
 def plot_graph_function_approximation(f, dilatation_factor=50, polynomial_degree=25, bound=1, convertToTensor=True):
     if convertToTensor:
-        f_a = lambda x: f(torch.tensor(x*a))
+        f_a = lambda x: f(torch.tensor(x*dilatation_factor))
     else:
-        f_a = lambda x: f(x*a)
+        f_a = lambda x: f(x*dilatation_factor)
 
-    domain = [-A,A]
+    domain = [-bound,bound]
 
-    p = Chebyshev.interpolate(f_a,deg=n,domain=domain)
+    p = Chebyshev.interpolate(f_a,deg=polynomial_degree,domain=domain)
 
     x = np.linspace(*domain,100)
     y = f_a(x)
     pred = p(x)
 
-    y2 = tanh_a(x)
-    pred2 = p_tanh(x)
-
     fig, ax = plt.subplots()
 
     # plot the function
-    ax.plot(x,y1, 'g', label="Sigmoid")
-    ax.plot(x,pred1,"b-", label=f"Polynomial approximation")
+    ax.plot(x,y, 'g', label="Sigmoid")
+    ax.plot(x,pred,"b-", label=f"Polynomial approximation")
     ax.legend()
 
     # show the plot
-    fig.suptitle(f"Tchebytchev polynomials with expansion a={a} and degree n={n}")
+    fig.suptitle(f"Tchebytchev polynomials with expansion a={dilatation_factor} and degree n={polynomial_degree}")
     fig.show()
 
     return fig,ax
