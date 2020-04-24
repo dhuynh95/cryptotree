@@ -150,7 +150,7 @@ def create_linear_node_comparator(tree: BaseDecisionTree) -> nn.Linear:
     feature = tree.tree_.feature
     threshold = tree.tree_.threshold
 
-    d = estimator.n_features_
+    d = tree.n_features_
 
     node_depth, is_leaves = compute_leaves(n_nodes, children_left, children_right)
     internal_nodes = [i for i,isLeaf in enumerate(is_leaves)if not isLeaf]
