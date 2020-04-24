@@ -36,7 +36,15 @@ index = {"shift_bit_eps": "01_sigmoid.ipynb",
          "ptx_value": "homomorphic_tree.ipynb",
          "ctx_value": "homomorphic_tree.ipynb",
          "print_ctx": "homomorphic_tree.ipynb",
-         "print_ptx": "homomorphic_tree.ipynb"}
+         "print_ptx": "homomorphic_tree.ipynb",
+         "coeffs_to_plaintext": "homomorphic_tree.ipynb",
+         "compute_all_powers": "homomorphic_tree.ipynb",
+         "multiply_and_add_coeffs": "homomorphic_tree.ipynb",
+         "apply_comparator": "homomorphic_tree.ipynb",
+         "vrep": "homomorphic_tree.ipynb",
+         "extract_diagonals": "homomorphic_tree.ipynb",
+         "print_range_ctx": "homomorphic_tree.ipynb",
+         "print_range_ptx": "homomorphic_tree.ipynb"}
 
 modules = ["core.py",
            "sigmoid.py",
