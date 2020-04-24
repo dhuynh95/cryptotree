@@ -6,9 +6,9 @@ index = {"shift_bit_eps": "01_sigmoid.ipynb",
          "create_base_vectors": "01_sigmoid.ipynb",
          "create_linear_system": "01_sigmoid.ipynb",
          "BitComparison": "01_sigmoid.ipynb",
-         "chebyshev_approximation": "00_core.ipynb",
-         "polynomial_approximation_coefficients": "00_core.ipynb",
-         "plot_graph_function_approximation": "00_core.ipynb",
+         "chebyshev_approximation": "homomorphic_tree.ipynb",
+         "polynomial_approximation_coefficients": "homomorphic_tree.ipynb",
+         "plot_graph_function_approximation": "homomorphic_tree.ipynb",
          "compute_leaves": "00_core.ipynb",
          "create_linear_node_comparator": "00_core.ipynb",
          "create_parent_of": "00_core.ipynb",
@@ -31,10 +31,16 @@ index = {"shift_bit_eps": "01_sigmoid.ipynb",
          "TanhDecisionTree": "00_core.ipynb",
          "TanhClassificationTree": "00_core.ipynb",
          "check_output_range": "00_core.ipynb",
-         "register_output_check": "00_core.ipynb"}
+         "register_output_check": "00_core.ipynb",
+         "print_vector": "homomorphic_tree.ipynb",
+         "ptx_value": "homomorphic_tree.ipynb",
+         "ctx_value": "homomorphic_tree.ipynb",
+         "print_ctx": "homomorphic_tree.ipynb",
+         "print_ptx": "homomorphic_tree.ipynb"}
 
 modules = ["core.py",
-           "sigmoid.py"]
+           "sigmoid.py",
+           "he.py"]
 
 doc_url = "https://dhuynh95.github.io/cryptotree/"
 
