@@ -374,7 +374,7 @@ class DecisionTree(nn.Module):
         self.comparator = create_linear_node_comparator(tree)
         self.matcher = create_linear_leaf_matcher(tree)
 
-        if is_classifier(estimator):
+        if is_classifier(tree):
             self.head = create_classifier_head(tree)
         else:
             self.head = create_regression_head(tree)
