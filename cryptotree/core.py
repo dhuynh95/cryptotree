@@ -331,7 +331,7 @@ def sigmoid_classification_head(tree: BaseDecisionTree) -> nn.Linear:
 
     leaves = [i for i,isLeaf in enumerate(is_leaves) if isLeaf]
 
-    values = tree.tree_.value[[0] + idx2leaves]
+    values = tree.tree_.value[[0] + leaves]
     values = torch.tensor(values).float()
     values = values.squeeze(1)
 
