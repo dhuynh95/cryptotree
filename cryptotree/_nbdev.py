@@ -42,12 +42,13 @@ index = {"shift_bit_eps": "01_sigmoid.ipynb",
          "coeffs_to_plaintext": "homomorphic_tree.ipynb",
          "compute_all_powers": "homomorphic_tree.ipynb",
          "multiply_and_add_coeffs": "homomorphic_tree.ipynb",
-         "repeat_vector": "homomorphic_tree.ipynb",
-         "apply_comparator": "homomorphic_tree.ipynb",
          "vrep": "homomorphic_tree.ipynb",
+         "apply_comparator": "homomorphic_tree.ipynb",
          "extract_diagonals": "homomorphic_tree.ipynb",
          "matrix_multiply_diagonals": "homomorphic_tree.ipynb",
-         "pad_matrix": "homomorphic_tree.ipynb"}
+         "add_bias_ptx": "homomorphic_tree.ipynb",
+         "LinearCtx": "homomorphic_tree.ipynb",
+         "pad_along_axis": "homomorphic_tree.ipynb"}
 
 modules = ["core.py",
            "sigmoid.py",

@@ -2,8 +2,8 @@
 
 __all__ = ['print_vector', 'ptx_value', 'ctx_value', 'print_ctx', 'print_ptx', 'print_range_ctx', 'print_range_ptx',
            'chebyshev_approximation', 'polynomial_approximation_coefficients', 'plot_graph_function_approximation',
-           'coeffs_to_plaintext', 'compute_all_powers', 'multiply_and_add_coeffs', 'repeat_vector', 'apply_comparator',
-           'vrep', 'extract_diagonals', 'matrix_multiply_diagonals', 'pad_matrix']
+           'coeffs_to_plaintext', 'compute_all_powers', 'multiply_and_add_coeffs', 'vrep', 'apply_comparator',
+           'extract_diagonals', 'matrix_multiply_diagonals', 'add_bias_ptx', 'LinearCtx', 'pad_along_axis']
 
 # Cell
 from numpy.polynomial import Polynomial
@@ -102,7 +102,8 @@ def plot_graph_function_approximation(f, dilatation_factor=50, polynomial_degree
     return fig,ax
 
 # Cell
-def coeffs_to_plaintext(coeffs: List[float], encoder: CKKSEncoder, scale: float):
+def coeffs_to_plaintext(coeffs: List[float], encoder: CKKSEncoder, scale: float) -> List[Plaintext]:
+    """Computes the plaintext encodings of coefficients"""
     plain_coeffs = []
 
     for coef in coeffs:
@@ -194,7 +195,7 @@ def multiply_and_add_coeffs(powers: List[Ciphertext], plain_coeffs: List[Plainte
     return output
 
 # Cell
-def repeat_vector(x, n):
+def vrep(x, n):
     k = n // len(x)
     rest = n % len(x)
     output = x * k + x[:rest]
@@ -250,24 +251,18 @@ def apply_comparator(ctx: Ciphertext, comparator: nn.Linear,
     return output
 
 # Cell
-def vrep(x: List, n:int) -> List:
-    k = n // len(x)
-    rest = n % len(x)
-    output = x * k + x[:rest]
-    return output
-
-# Cell
-def extract_diagonals(matrix: np.ndarray, encoder: CKKSEncoder, pa) -> List[Plaintext]:
+def extract_diagonals(matrix: np.ndarray, encoder: CKKSEncoder) -> List[Plaintext]:
     """Extracts the diagonals of the matrix"""
     assert matrix.shape[0] == matrix.shape[1], "Non square matrix"
     dim = matrix.shape[0]
 
     diagonals = []
-    diagonal_ptx = Plaintext()
+
     for i in range(dim):
         diagonal = []
         for j in range(dim):
             diagonal.append(matrix[j][(j+i) % dim])
+        diagonal_ptx = Plaintext()
         encoder.encode(DoubleVector(diagonal), scale, diagonal_ptx)
         diagonals.append(diagonal_ptx)
     return diagonals
@@ -276,9 +271,10 @@ def extract_diagonals(matrix: np.ndarray, encoder: CKKSEncoder, pa) -> List[Plai
 def matrix_multiply_diagonals(diagonals: List[Plaintext], ctx: Ciphertext,
                               evaluator: Evaluator, galois_keys: GaloisKeys):
     output = Ciphertext()
-    temp = Ciphertext()
 
     for i in range(len(diagonals)):
+
+        temp = Ciphertext()
         diagonal = diagonals[i]
 
         evaluator.rotate_vector(ctx, i, galois_keys, temp)
@@ -294,10 +290,38 @@ def matrix_multiply_diagonals(diagonals: List[Plaintext], ctx: Ciphertext,
 
     return output
 
+def add_bias_ptx(bias: np.ndarray, ctx: Ciphertext, evaluator: Evaluator):
+    bias = DoubleVector(list(bias))
+    bias_ptx = Plaintext()
+    encoder.encode(bias, scale, bias_ptx)
 
+    evaluator.mod_switch_to_inplace(bias_ptx, ctx.parms_id())
+    ctx.scale(scale)
+
+    output = Ciphertext()
+    evaluator.add_plain(ctx, bias_ptx, output)
+    return output
+
+class LinearCtx():
+    def __init__(self, matrix, bias):
+        self.diagonals = extract_diagonals(matrix)
+        self.bias = bias
+
+    def __call__(self, ctx):
+        pass
 
 # Cell
-def pad_matrix(matrix: np.ndarray):
-    pad = np.zeros(matrix.shape[0]).reshape(-1,1)
-    matrix = np.concatenate([matrix, pad], axis=1)
-    return matrix
+def pad_along_axis(array: np.ndarray, target_length, axis=0):
+
+    pad_size = target_length - array.shape[axis]
+    axis_nb = len(array.shape)
+
+    if pad_size <= 0:
+        return array
+
+    npad = [(0, 0) for x in range(axis_nb)]
+    npad[axis] = (0, pad_size)
+
+    b = np.pad(array, pad_width=npad, mode='constant', constant_values=0)
+
+    return b
