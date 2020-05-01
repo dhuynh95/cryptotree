@@ -20,6 +20,7 @@ from sklearn.base import is_classifier
 
 from typing import Callable
 from numpy.polynomial.chebyshev import Chebyshev
+from numpy.polynomial import Polynomial
 from .activations import create_linear_node_comparator
 
 DEFAULT_POLYNOMIAL_DEGREE = 16
@@ -42,8 +43,10 @@ class NeuralTreeMaker:
             domain = [-bound, bound]
             activation_fn_numpy = lambda x: activation_fn(torch.tensor(x))
             self.activation = Chebyshev.interpolate(activation_fn_numpy,deg=polynomial_degree,domain=domain)
+            self.coeffs = Polynomial.cast(self.activation).coef
         else:
             self.activation = activation_fn
+            self.coeffs = None
 
         self.create_linear_leaf_matcher = create_linear_leaf_matcher
         self.create_regression_head = create_regression_head
@@ -56,7 +59,6 @@ class NeuralTreeMaker:
             create_head = self.create_regression_head
         neural_tree = NeuralDecisionTree(tree, self.activation, self.create_linear_leaf_matcher, create_head)
         return neural_tree
-
 
 class NeuralDecisionTree(nn.Module):
     """Base class of Neural Decision Trees."""

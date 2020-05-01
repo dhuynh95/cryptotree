@@ -55,7 +55,12 @@ index = {"compute_leaves": "00_activations.ipynb",
          "matrix_multiply_diagonals": "04_linear.ipynb",
          "HomomorphicTreeEvaluator": "05_cryptotree.ipynb",
          "HomomorphicTreeFeaturizer": "05_cryptotree.ipynb",
+         "to_list_and_duplicate": "05_cryptotree.ipynb",
+         "to_list_and_pad": "05_cryptotree.ipynb",
+         "HomomorphicModel": "05_cryptotree.ipynb",
          "HomomorphicDecisionTree": "05_cryptotree.ipynb",
+         "HomomorphicNeuralRandomForest": "05_cryptotree.ipynb",
+         "test_ciphertext": "05_cryptotree.ipynb",
          "expand_comparator": "05_cryptotree.ipynb",
          "return_comparator": "05_cryptotree.ipynb"}
 

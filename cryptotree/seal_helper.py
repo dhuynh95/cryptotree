@@ -53,14 +53,18 @@ def print_ptx(ptx):
     print_vector(result, 3, 7)
 
 def print_range_ctx(ctx, end=0, begin=0):
-    r = range(begin,end)
-    for i in r:
-        print(ctx_value(ctx, i))
+    ptx = Plaintext()
+    decryptor.decrypt(ctx, ptx)
+
+    print_range_ptx(ptx, end, begin)
 
 def print_range_ptx(ptx, end=0, begin=0):
     r = range(begin,end)
+
+    values = DoubleVector()
+    encoder.decode(ptx, values)
     for i in r:
-        print(ptx_value(ptx, i))
+        print(f"{i} : {values[i]}")
 
 # Cell
 def float_to_ctx(x, encoder: CKKSEncoder, encryptor: Encryptor):
