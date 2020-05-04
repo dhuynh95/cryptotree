@@ -28,7 +28,7 @@ DEFAULT_DILATATION_FACTOR = 16
 DEFAULT_BOUND = 1.0
 
 class NeuralTreeMaker:
-    """Base class of Neural Decision Trees."""
+    """Base class to """
     def __init__(self,
                  activation: Callable,
                  create_linear_leaf_matcher: Callable,
@@ -38,6 +38,7 @@ class NeuralTreeMaker:
                  use_polynomial : bool = False,
                  polynomial_degree : int = DEFAULT_POLYNOMIAL_DEGREE, bound: float = DEFAULT_BOUND):
 
+        # first we need to define the activation used
         activation_fn = lambda x: activation(x * dilatation_factor)
         if use_polynomial:
             domain = [-bound, bound]
@@ -206,6 +207,8 @@ class NeuralRandomForest(nn.Module):
         n_nodes_max = max(n_nodes)
         n_leaves_max = max(n_leaves)
 
+        self.n_leaves_max = n_leaves_max
+
         for neural_tree in neural_trees:
             pad_neural_tree(neural_tree, n_nodes_max, n_leaves_max)
 
@@ -263,14 +266,44 @@ class NeuralRandomForest(nn.Module):
             self.register_buffer("bias",bias)
 
     def forward(self, x):
+        comparisons = self.compare(x)
+        matches = self.match(comparisons)
+        outputs = self.decide(matches)
+
+        return outputs
+
+    def compare(self, x):
         comparisons = torch.einsum("kj,jil->kil",x,self.comparator) + self.comparator_bias.unsqueeze(0)
         comparisons = self.activation(comparisons)
+        return comparisons
 
+    def match(self, comparisons):
         matches = torch.einsum("kjl,ijl->kil",comparisons, self.matcher) + self.matcher_bias
         matches = self.activation(matches)
+        return matches
 
+    def decide(self, matches):
         outputs = torch.einsum("kjl,cjl->kcl",matches,self.head) + self.head_bias
         outputs = (outputs * self.weights.expand_as(outputs)).sum(dim=-1)
         outputs = outputs + self.bias.expand_as(outputs)
-
         return outputs
+
+    def get_trees(self) -> List[NeuralDecisionTree]:
+        """Returns the trees contained in the the Neural Random Forest,
+        in the form a of a list of Neural Decision Trees."""
+
+    def get_weight_and_bias(self, module:str):
+        weight = getattr(self, module)
+        bias = getattr(self, module + "_bias")
+
+        return weight, bias
+
+    def freeze_layer(self, module: str):
+        weight, bias = self.get_weight_and_bias(module)
+        weight.requires_grad = False
+        bias.requires_grad = False
+
+    def unfreeze_layer(self, module: str):
+        weight, bias = self.get_weight_and_bias(module)
+        weight.requires_grad = True
+        bias.requires_grad = True
