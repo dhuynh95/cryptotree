@@ -110,6 +110,8 @@ def compute_all_powers(ctx : Ciphertext, degree: int, evaluator: Evaluator,
 
 # Cell
 from .seal_helper import ctx_value
+from typing import List, Union
+from seal import Evaluator, Ciphertext, Plaintext
 
 def multiply_and_add_coeffs(powers: List[Ciphertext], plain_coeffs: List[Plaintext],
                             coeffs: List[float],

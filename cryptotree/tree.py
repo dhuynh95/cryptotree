@@ -8,7 +8,6 @@ __all__ = ['NeuralTreeMaker', 'NeuralDecisionTree', 'DEFAULT_POLYNOMIAL_DEGREE',
 import numpy as np
 
 from typing import List
-import torch.nn as nn
 import torch
 
 from sklearn.tree import BaseDecisionTree
@@ -18,6 +17,7 @@ from functools import partial
 from sklearn.tree import BaseDecisionTree
 from sklearn.base import is_classifier
 
+import torch.nn as nn
 from typing import Callable
 from numpy.polynomial.chebyshev import Chebyshev
 from numpy.polynomial import Polynomial
