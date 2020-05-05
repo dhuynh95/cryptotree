@@ -34,6 +34,10 @@ As of now, there are two ways to install cryptotree, which is dependent on [SEAL
 
 A full example of the Adult income dataset can be found in https://github.com/dhuynh95/cryptotree/blob/master/examples/adult_dataset.ipynb.
 
+## Paper
+
+TBD
+
 ## TODO
 
 - Implement Baby step, Giant step for homomorphic polynomial evaluation
