@@ -5,8 +5,8 @@ title: cryptotree
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Cryptotree is an implementation of Neural Decision Trees (NDT), and Homomorphic Decision Trees (HDT), which enable users to convert their Scikit-learn trees to NDT, then to HDT."
-description: "Cryptotree is an implementation of Neural Decision Trees (NDT), and Homomorphic Decision Trees (HDT), which enable users to convert their Scikit-learn trees to NDT, then to HDT."
+summary: "Cryptotree is an implementation of Neural Random Forests, and Homomorphic Random Forests."
+description: "Cryptotree is an implementation of Neural Random Forests, and Homomorphic Random Forests."
 ---
 <!--
 
@@ -29,26 +29,51 @@ description: "Cryptotree is an implementation of Neural Decision Trees (NDT), an
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Install">Install<a class="anchor-link" href="#Install"> </a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><code>pip install your_project_name</code></p>
+<p>Cryptotree is an open-source package to allow the Decision Trees and Random Forests to be used on encrypted data, using the homomorphic encryption library <a href="https://github.com/Microsoft/SEAL">Microsoft SEAL</a>, and its Python wrapper <a href="https://github.com/Huelse/SEAL-Python">SEAL-python</a>. Cryptotree leverages the recent encryption scheme <a href="https://eprint.iacr.org/2016/421.pdf">CKKS</a>, which is implemented in SEAL, to perform homomorphic computation.</p>
+<p>By leveraging the fact that Random Forests can be modeled by <a href="https://arxiv.org/pdf/1604.07143.pdf">Neural Random Forests</a> (2016, Biau, Scornet &amp; Welbl), cryptotree proposes an homomorphic evaluation of these Neural Networks in a SIMD (Single Instruction Multiple Data) manner, in order to do homomorphic evaluation of Homomorphic Random Forests.</p>
+<p>Cryptotree therefore both implements Neural Random Forests, and Homomorphic Random Forests, and allows the use of powerful supervised models on encrypted data.</p>
+<p>Cryptotree is developped using <a href="https://nbdev.fast.ai/">nbdev</a>, which allows to develop efficiently in Jupyter notebooks. The code is therefore available in the folder <code>nbs/</code>, and has been structured to be heavily documented with examples for a better understanding of cryptotree.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-to-use">How to use<a class="anchor-link" href="#How-to-use"> </a></h2>
+<h2 id="Install">Install<a class="anchor-link" href="#Install"> </a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Fill me in please! Don't forget code examples:</p>
+<p>As of now, there are two ways to install cryptotree, which is dependent on <a href="https://github.com/Huelse/SEAL-Python">SEAL-python</a> :</p>
+<ol>
+    <li> Install manually :
+        <ol>
+            <li>Follow the install instructions of SEAL-python : https://github.com/Huelse/SEAL-Python</li>
+            <li>Git clone this repository : <code>git clone https://github.com/dhuynh95/cryptotree.git</code></li>
+            <li>Cd into the repository and run the installation : <code>cd cryptotree & pip3 install -e . </code></li>
+        </ol>
+    </li>
+    <li> Use Docker :
+        <ol>
+            <li>Git clone the repository with the submodule SEAL-Python : <br>
+                <code>git clone --recurse-submodules https://github.com/dhuynh95/cryptotree.git</code> </li>
+            <li>Create the Docker image : <code>docker build -t cryptotree .</code></li>
+        </ol>
+    </li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Examples">Examples<a class="anchor-link" href="#Examples"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A full example of the Adult income dataset can be found in <a href="https://github.com/dhuynh95/cryptotree/blob/master/examples/adult_dataset.ipynb">https://github.com/dhuynh95/cryptotree/blob/master/examples/adult_dataset.ipynb</a>.</p>
 
 </div>
 </div>
@@ -56,8 +81,23 @@ description: "Cryptotree is an implementation of Neural Decision Trees (NDT), an
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="TODO">TODO<a class="anchor-link" href="#TODO"> </a></h2><ul>
-<li>Implement Baby step, Giant step for polynomial evaluation</li>
+<li>Implement Baby step, Giant step for homomorphic polynomial evaluation</li>
 <li>Find a way to fine tune the comparator and the matcher of the neural decision trees, while preserving the invariant which is having an output in $[-1,1]$</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Contributors">Contributors<a class="anchor-link" href="#Contributors"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><a href="https://github.com/dhuynh95">D. Huynh</a></li>
 </ul>
 
 </div>
