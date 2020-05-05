@@ -10,11 +10,23 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: module name here
-      url: /core
+      title: activation
+      url: /activations
+    - output: web,pdf
+      title: tree
+      url: /tree
     - output: web,pdf
       title: Title
-      url: /polynomial_approximation
+      url: /seal_helper
+    - output: web,pdf
+      title: polynomials
+      url: /polynomials
+    - output: web,pdf
+      title: linear
+      url: /linear
+    - output: web,pdf
+      title: cryptotree
+      url: /cryptotree
     output: web
     title: cryptotree
   output: web

@@ -1,7 +1,11 @@
 {
   "cryptotree": {
     "Overview": "/",
-    "module name here": "/core",
-    "Title": "/polynomial_approximation"
+    "activation": "/activations",
+    "tree": "/tree",
+    "Title": "/seal_helper",
+    "polynomials": "/polynomials",
+    "linear": "/linear",
+    "cryptotree": "/cryptotree"
   }
 }
