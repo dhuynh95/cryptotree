@@ -2,7 +2,7 @@
 
 __all__ = ['NeuralTreeMaker', 'NeuralDecisionTree', 'DEFAULT_POLYNOMIAL_DEGREE', 'DEFAULT_DILATATION_FACTOR',
            'DEFAULT_BOUND', 'raise_error_wrong_tree', 'SigmoidTreeMaker', 'TanhTreeMaker', 'check_output_range',
-           'register_output_check', 'pad_tensor', 'pad_neural_tree', 'NeuralRandomForest']
+           'register_output_check', 'pad_tensor', 'pad_neural_tree', 'NeuralRandomForest', 'CrossEntropyLabelSmoothing']
 
 # Cell
 import numpy as np
@@ -87,6 +87,18 @@ class NeuralDecisionTree(nn.Module):
 
         return output
 
+    def return_weights(self):
+        """Returns the weights used in each layer."""
+        w0 = self.comparator.weight.data.numpy()
+        b0 = self.comparator.bias.data.numpy()
+
+        w1 = self.matcher.weight.data.numpy()
+        b1 = self.matcher.bias.data.numpy()
+
+        w2 = self.head.weight.data.numpy()
+        b2 = self.head.bias.data.numpy()
+
+        return w0, b0, w1, b1, w2, b2
 
 # Cell
 from .activations import sigmoid_linear_leaf_matcher, sigmoid_classification_head
@@ -288,10 +300,6 @@ class NeuralRandomForest(nn.Module):
         outputs = outputs + self.bias.expand_as(outputs)
         return outputs
 
-    def get_trees(self) -> List[NeuralDecisionTree]:
-        """Returns the trees contained in the the Neural Random Forest,
-        in the form a of a list of Neural Decision Trees."""
-
     def get_weight_and_bias(self, module:str):
         weight = getattr(self, module)
         bias = getattr(self, module + "_bias")
@@ -307,3 +315,43 @@ class NeuralRandomForest(nn.Module):
         weight, bias = self.get_weight_and_bias(module)
         weight.requires_grad = True
         bias.requires_grad = True
+
+    def return_weights(self):
+        W0 = list(self.comparator.data.permute(2,1,0).numpy())
+        B0 = list(self.comparator_bias.data.permute(1,0).numpy())
+
+        W1 = list(self.matcher.data.permute(2,0,1).numpy())
+        B1 = list(self.matcher_bias.data.permute(1,0).numpy())
+
+        W2 = list(self.head.data.permute(2,0,1).numpy())
+        B2 = list(self.head_bias.data.permute(1,0).numpy())
+
+        return W0, B0, W1, B1, W2, B2
+
+# Cell
+import torch.nn.functional as F
+
+class CrossEntropyLabelSmoothing(nn.Module):
+    def __init__(self,eps=0.1,reshape=True):
+        super(CrossEntropyLabelSmoothing,self).__init__()
+        self.eps = eps
+        self.ce = nn.CrossEntropyLoss(reduction="none")
+        self.reshape = reshape
+
+    def forward(self,pred,y):
+        # bs * n_c
+        K = pred.shape[-1]
+
+        if self.reshape:
+            pred = pred.view(-1,K)
+            y = y.view(-1)
+
+        sum_logits = - F.log_softmax(pred,dim=1).sum(dim=1)
+        ce = self.ce(pred,y)
+        loss = (1 - self.eps) * ce + self.eps * sum_logits / K
+
+        mask = (y != -100).long()
+        n = mask.sum()
+
+        loss = (mask * loss).sum() / n
+        return loss
