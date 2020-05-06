@@ -140,4 +140,9 @@ checklink/cookies.txt
 .gitconfig
 
 # Models folders using Fastai
-examples/models
+examples/
+examples/.*ipynb
+
+*.pth
+*.pkl
+seal/

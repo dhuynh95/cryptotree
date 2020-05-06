@@ -15,6 +15,8 @@ import numpy as np
 import torch
 from typing import List, Callable
 
+import pickle
+
 # Cell
 def to_list_and_duplicate(array):
     """Takes an array, append a 0 then copies itself once more.
@@ -265,6 +267,9 @@ class HomomorphicTreeFeaturizer:
         ctx = Ciphertext()
         encryptor.encrypt(ptx, ctx)
         return ctx
+
+    def save(self, path:str):
+        pickle.dump(self.comparator, open(path, "wb"))
 
 # Cell
 from fastcore.test import test_close
