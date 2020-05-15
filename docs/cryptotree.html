@@ -58,10 +58,11 @@ description: "Homomorphic implementations of neural decisions trees."
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="to_list_and_duplicate" class="doc_header"><code>to_list_and_duplicate</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/cryptotree.py#L21" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>to_list_and_duplicate</code>(<strong><code>array</code></strong>)</p>
+<h4 id="to_list_and_duplicate" class="doc_header"><code>to_list_and_duplicate</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/cryptotree.py#L20" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>to_list_and_duplicate</code>(<strong><code>array</code></strong>)</p>
 </blockquote>
 <p>Takes an array, append a 0 then copies itself once more.</p>
-<p>This step is necessary to do matrix multiplication with Galois rotations.</p>
+<p>This step is necessary to do matrix multiplication with Galois rotations.
+This is used on the bias of the comparator.</p>
 
 </div>
 
@@ -87,7 +88,8 @@ description: "Homomorphic implementations of neural decisions trees."
 <h4 id="to_list_and_pad" class="doc_header"><code>to_list_and_pad</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/cryptotree.py#L30" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>to_list_and_pad</code>(<strong><code>array</code></strong>)</p>
 </blockquote>
 <p>Takes an array, append a 0 then copies itself once more.</p>
-<p>This step is necessary to do matrix multiplication with Galois rotations.</p>
+<p>This step is necessary to do matrix multiplication with Galois rotations.
+This is used on the diagonal vectors.</p>
 
 </div>
 
@@ -253,7 +255,7 @@ homomorphic operations from a Neural Decision Tree.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="HomomorphicTreeFeaturizer" class="doc_header"><code>class</code> <code>HomomorphicTreeFeaturizer</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/cryptotree.py#L250" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>HomomorphicTreeFeaturizer</code>(<strong><code>comparator</code></strong>:<code>ndarray</code>, <strong><code>encoder</code></strong>:<code>CKKSEncoder</code>, <strong><code>encryptor</code></strong>:<code>Encryptor</code>, <strong><code>scale</code></strong>:<code>float</code>)</p>
+<h2 id="HomomorphicTreeFeaturizer" class="doc_header"><code>class</code> <code>HomomorphicTreeFeaturizer</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/cryptotree.py#L251" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>HomomorphicTreeFeaturizer</code>(<strong><code>comparator</code></strong>:<code>ndarray</code>, <strong><code>encoder</code></strong>:<code>CKKSEncoder</code>, <strong><code>encryptor</code></strong>:<code>Encryptor</code>, <strong><code>scale</code></strong>:<code>float</code>)</p>
 </blockquote>
 <p>Featurizer used by the client to encode and encrypt data.</p>
 
@@ -322,7 +324,7 @@ homomorphic operations from a Neural Decision Tree.</p>
 
 <div class="output_text output_subarea output_execute_result">
 <pre>(&lt;Figure size 432x288 with 1 Axes&gt;,
- &lt;matplotlib.axes._subplots.AxesSubplot at 0x7f96693b9610&gt;)</pre>
+ &lt;matplotlib.axes._subplots.AxesSubplot at 0x7f25cd161af0&gt;)</pre>
 </div>
 
 </div>
@@ -587,11 +589,10 @@ homomorphic operations from a Neural Decision Tree.</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
-    <span class="n">ptx</span> <span class="o">=</span> <span class="n">Plaintext</span><span class="p">()</span>
+    <span class="n">ptx</span> <span class="o">=</span> <span class="n">seal</span><span class="o">.</span><span class="n">Plaintext</span><span class="p">()</span>
     <span class="n">decryptor</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">ptx</span><span class="p">)</span>
     
-    <span class="n">values</span> <span class="o">=</span> <span class="n">DoubleVector</span><span class="p">()</span>
-    <span class="n">encoder</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">ptx</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">decode_double</span><span class="p">(</span><span class="n">ptx</span><span class="p">)</span>
     
     <span class="n">output</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
@@ -607,9 +608,9 @@ homomorphic operations from a Neural Decision Tree.</p>
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>0.01843261718749994
-0.23799133300781392
--0.17070007324218633
+<pre>0.02543640136718763
+0.23716735839843653
+-0.1674423217773434
 </pre>
 </div>
 </div>
@@ -774,11 +775,10 @@ homomorphic operations from a Neural Decision Tree.</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
-    <span class="n">ptx</span> <span class="o">=</span> <span class="n">Plaintext</span><span class="p">()</span>
+    <span class="n">ptx</span> <span class="o">=</span> <span class="n">seal</span><span class="o">.</span><span class="n">Plaintext</span><span class="p">()</span>
     <span class="n">decryptor</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">ptx</span><span class="p">)</span>
     
-    <span class="n">values</span> <span class="o">=</span> <span class="n">DoubleVector</span><span class="p">()</span>
-    <span class="n">encoder</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">ptx</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">decode_double</span><span class="p">(</span><span class="n">ptx</span><span class="p">)</span>
     
     <span class="n">output</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
@@ -794,9 +794,9 @@ homomorphic operations from a Neural Decision Tree.</p>
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>-0.061660766601562354
-0.2023696899414081
--0.10960388183593756
+<pre>-0.06132507324218763
+0.20121765136718736
+-0.10980987548828139
 </pre>
 </div>
 </div>
@@ -841,68 +841,6 @@ homomorphic operations from a Neural Decision Tree.</p>
 
 <div class="output_text output_subarea output_execute_result">
 <pre>tensor([[-0.0568,  0.2032, -0.1049]], grad_fn=&lt;AddBackward0&gt;)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Testing">Testing<a class="anchor-link" href="#Testing"> </a></h2>
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="print_comparison" class="doc_header"><code>print_comparison</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/cryptotree.py#L277" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>print_comparison</code>(<strong><code>expected_output</code></strong>:<code>tensor</code>, <strong><code>output</code></strong>:<code>Ciphertext</code>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="test_ciphertext" class="doc_header"><code>test_ciphertext</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/cryptotree.py#L281" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_ciphertext</code>(<strong><code>ctx_target</code></strong>:<code>Ciphertext</code>, <strong><code>ctxs</code></strong>:<code>List</code>[<code>Ciphertext</code>], <strong><code>distance</code></strong>:<code>int</code>)</p>
-</blockquote>
-<p>Tests if the ctx target is equal to the other ciphertexts when shifted by the distance</p>
-
 </div>
 
 </div>

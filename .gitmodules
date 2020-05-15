@@ -1,3 +1,3 @@
-[submodule "SEAL-Python"]
-	path = SEAL-Python
-	url = https://github.com/Huelse/SEAL-Python.git
+[submodule "third_party/TenSEAL"]
+	path = third_party/TenSEAL
+	url = https://github.com/OpenMined/TenSEAL

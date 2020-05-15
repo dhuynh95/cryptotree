@@ -179,7 +179,7 @@ description: "Linear functions helpers"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="sum_reduce" class="doc_header"><code>sum_reduce</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/linear.py#L77" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>sum_reduce</code>(<strong><code>ctx</code></strong>, <strong><code>evaluator</code></strong>, <strong><code>galois_keys</code></strong>, <strong><code>n_slot</code></strong>)</p>
+<h4 id="sum_reduce" class="doc_header"><code>sum_reduce</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/linear.py#L77" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>sum_reduce</code>(<strong><code>ctx</code></strong>:<code>Ciphertext</code>, <strong><code>evaluator</code></strong>:<code>Evaluator</code>, <strong><code>galois_keys</code></strong>:<code>GaloisKeys</code>, <strong><code>n_slot</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Sums all the coefficients of the ciphertext, supposing that coefficients up to n_slot
 are non zero. The first coefficient of the output will then be the sum of the coefficients.</p>
@@ -205,7 +205,7 @@ are non zero. The first coefficient of the output will then be the sum of the co
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dot_product_plain" class="doc_header"><code>dot_product_plain</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/linear.py#L94" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot_product_plain</code>(<strong><code>ctx</code></strong>, <strong><code>ptx</code></strong>, <strong><code>evaluator</code></strong>, <strong><code>galois_keys</code></strong>, <strong><code>n_slot</code></strong>)</p>
+<h4 id="dot_product_plain" class="doc_header"><code>dot_product_plain</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/linear.py#L95" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot_product_plain</code>(<strong><code>ctx</code></strong>:<code>Ciphertext</code>, <strong><code>ptx</code></strong>:<code>Plaintext</code>, <strong><code>evaluator</code></strong>:<code>Evaluator</code>, <strong><code>galois_keys</code></strong>:<code>GaloisKeys</code>, <strong><code>n_slot</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Computes the dot product between a ciphertext and a plaintext</p>
 
@@ -228,7 +228,6 @@ are non zero. The first coefficient of the output will then be the sum of the co
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">builtins</span>
 <span class="kn">from</span> <span class="nn">cryptotree.seal_helper</span> <span class="kn">import</span> <span class="n">print_ctx</span><span class="p">,</span> <span class="n">print_ptx</span><span class="p">,</span> <span class="n">create_seal_globals</span><span class="p">,</span> <span class="n">append_globals_to_builtins</span>
-<span class="kn">from</span> <span class="nn">seal</span> <span class="kn">import</span> <span class="n">Plaintext</span><span class="p">,</span> <span class="n">Ciphertext</span>
 
 <span class="n">poly_modulus_degree</span> <span class="o">=</span> <span class="mi">8192</span>
 <span class="n">moduli</span> <span class="o">=</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">]</span>
@@ -255,14 +254,73 @@ are non zero. The first coefficient of the output will then be the sum of the co
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
 <span class="n">n_slot</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-<span class="n">ptx</span> <span class="o">=</span> <span class="n">Plaintext</span><span class="p">()</span>
-<span class="n">encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">DoubleVector</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">scale</span><span class="p">,</span> <span class="n">ptx</span><span class="p">)</span>
+<span class="n">ptx</span> <span class="o">=</span> <span class="n">seal</span><span class="o">.</span><span class="n">Plaintext</span><span class="p">()</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">ptx</span><span class="p">)</span>
 
-<span class="n">ctx</span> <span class="o">=</span> <span class="n">Ciphertext</span><span class="p">()</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">seal</span><span class="o">.</span><span class="n">Ciphertext</span><span class="p">()</span>
 <span class="n">encryptor</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">ptx</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="test_sum" class="doc_header"><code>test_sum</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/linear.py#L108" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_sum</code>(<strong><code>x</code></strong>:<code>List</code>[<code>float</code>], <strong><code>evaluator</code></strong>, <strong><code>encoder</code></strong>, <strong><code>encryptor</code></strong>, <strong><code>decryptor</code></strong>, <strong><code>scale</code></strong>, <strong><code>eps</code></strong>=<em><code>0.01</code></em>)</p>
+</blockquote>
+<p>Tests if the output of the polynomial, defined by the coeffs, is the same
+between the homomorphic evaluation and the regular one</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="test_dot_product_plain" class="doc_header"><code>test_dot_product_plain</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/linear.py#L129" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_dot_product_plain</code>(<strong><code>x</code></strong>:<code>List</code>[<code>float</code>], <strong><code>y</code></strong>:<code>List</code>[<code>float</code>], <strong><code>evaluator</code></strong>, <strong><code>encoder</code></strong>, <strong><code>encryptor</code></strong>, <strong><code>decryptor</code></strong>, <strong><code>galois_keys</code></strong>, <strong><code>scale</code></strong>, <strong><code>eps</code></strong>=<em><code>0.01</code></em>)</p>
+</blockquote>
+<p>Tests if the output of the polynomial, defined by the coeffs, is the same
+between the homomorphic evaluation and the regular one</p>
+
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -291,15 +349,51 @@ are non zero. The first coefficient of the output will then be the sum of the co
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-    [ 10.0000779, 9.0000166, 7.0000079, ..., 0.9999931, 3.0000874, 6.0000372 ]
+    [ 9.9998279, 8.9999951, 7.0000600, ..., 0.9999810, 3.0002584, 5.9999985 ]
 
 
-    [ 29.9999957, 28.9999968, 24.9999951, ..., 0.9999989, 5.0000006, 13.9999975 ]
+    [ 30.0000022, 29.0000026, 25.0000020, ..., 0.9999995, 5.0000002, 13.9999996 ]
 
 </pre>
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_sum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">evaluator</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">encryptor</span><span class="p">,</span> <span class="n">decryptor</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+<span class="n">test_sum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">evaluator</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">encryptor</span><span class="p">,</span> <span class="n">decryptor</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_dot_product_plain</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">evaluator</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">encryptor</span><span class="p">,</span> <span class="n">decryptor</span><span class="p">,</span> <span class="n">galois_keys</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+<span class="n">test_dot_product_plain</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">],</span> <span class="n">evaluator</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">encryptor</span><span class="p">,</span> <span class="n">decryptor</span><span class="p">,</span> <span class="n">galois_keys</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
