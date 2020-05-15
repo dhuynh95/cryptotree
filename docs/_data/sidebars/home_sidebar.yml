@@ -16,7 +16,7 @@ entries:
       title: tree
       url: /tree
     - output: web,pdf
-      title: Title
+      title: seal_helper
       url: /seal_helper
     - output: web,pdf
       title: polynomials

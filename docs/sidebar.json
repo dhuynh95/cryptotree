@@ -3,7 +3,7 @@
     "Overview": "/",
     "activation": "/activations",
     "tree": "/tree",
-    "Title": "/seal_helper",
+    "seal_helper": "/seal_helper",
     "polynomials": "/polynomials",
     "linear": "/linear",
     "cryptotree": "/cryptotree"

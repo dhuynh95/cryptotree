@@ -66,9 +66,7 @@ index = {"compute_leaves": "00_activations.ipynb",
          "HomomorphicDecisionTree": "05_cryptotree.ipynb",
          "HomomorphicNeuralRandomForest": "05_cryptotree.ipynb",
          "HomomorphicTreeEvaluator": "05_cryptotree.ipynb",
-         "HomomorphicTreeFeaturizer": "05_cryptotree.ipynb",
-         "print_comparison": "05_cryptotree.ipynb",
-         "test_ciphertext": "05_cryptotree.ipynb"}
+         "HomomorphicTreeFeaturizer": "05_cryptotree.ipynb"}
 
 modules = ["activations.py",
            "tree.py",
