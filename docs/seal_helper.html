@@ -242,7 +242,7 @@ sidebar: home_sidebar
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_seal_globals" class="doc_header"><code>create_seal_globals</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/seal_helper.py#L71" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_seal_globals</code>(<strong><code>globals</code></strong>:<code>dict</code>, <strong><code>poly_modulus_degree</code></strong>:<code>int</code>, <strong><code>moduli</code></strong>:<code>List</code>[<code>int</code>], <strong><code>PRECISION_BITS</code></strong>:<code>int</code>, <strong><code>use_local</code></strong>=<em><code>True</code></em>, <strong><code>use_symmetric_key</code></strong>=<em><code>True</code></em>)</p>
+<h4 id="create_seal_globals" class="doc_header"><code>create_seal_globals</code><a href="https://github.com/dhuynh95/cryptotree/tree/master/cryptotree/seal_helper.py#L71" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_seal_globals</code>(<strong><code>globals</code></strong>:<code>dict</code>, <strong><code>poly_modulus_degree</code></strong>:<code>int</code>, <strong><code>moduli</code></strong>:<code>List</code>[<code>int</code>], <strong><code>PRECISION_BITS</code></strong>:<code>int</code>, <strong><code>use_local</code></strong>=<em><code>True</code></em>, <strong><code>use_symmetric_key</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Creates SEAL context variables and populates the globals with it.</p>
 
@@ -462,10 +462,10 @@ sidebar: home_sidebar
     [ 1.0000000, 2.0000000, 3.0000000, ..., -0.0000000, -0.0000000, -0.0000000 ]
 
 
-    [ 1.0000001, 1.9999991, 3.0000011, ..., -0.0000003, -0.0000000, 0.0000004 ]
+    [ 0.9999999, 1.9999997, 3.0000000, ..., 0.0000002, -0.0000001, 0.0000000 ]
 
 
-    [ 2.0000000, 3.9999991, 6.0000010, ..., -0.0000003, -0.0000000, 0.0000003 ]
+    [ 1.9999999, 3.9999997, 6.0000000, ..., 0.0000002, -0.0000001, 0.0000000 ]
 
 </pre>
 </div>

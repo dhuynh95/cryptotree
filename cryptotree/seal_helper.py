@@ -69,7 +69,7 @@ def vrep(x, n):
 
 # Cell
 def create_seal_globals(globals: dict, poly_modulus_degree: int, moduli: List[int], PRECISION_BITS: int,
-                       use_local=True, use_symmetric_key=True):
+                       use_local=True, use_symmetric_key=False):
     """Creates SEAL context variables and populates the globals with it."""
     parms = seal.EncryptionParameters(seal.SCHEME_TYPE.CKKS)
     parms.set_poly_modulus_degree(poly_modulus_degree)
@@ -94,7 +94,7 @@ def create_seal_globals(globals: dict, poly_modulus_degree: int, moduli: List[in
         globals["galois_keys"] = keygen.galois_keys()
 
     if use_symmetric_key:
-        globals["encryptor"] = seal.Encryptor(context, globals["public_key"])
+        globals["encryptor"] = seal.Encryptor(context, globals["secret_key"])
     else:
         globals["encryptor"] = seal.Encryptor(context, globals["public_key"])
 
@@ -144,6 +144,7 @@ def load_seal_globals(globals, path:Path = Path("seal"), load_pk:bool = False, l
     parms.load(str(path/"parms"))
 
     context = seal.SEALContext.Create(parms, True, seal.SEC_LEVEL_TYPE.TC128)
+    globals["context"] = context
 
     if load_pk:
         public_key = seal.PublicKey()

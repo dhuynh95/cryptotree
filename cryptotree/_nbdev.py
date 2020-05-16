@@ -66,14 +66,18 @@ index = {"compute_leaves": "00_activations.ipynb",
          "HomomorphicDecisionTree": "05_cryptotree.ipynb",
          "HomomorphicNeuralRandomForest": "05_cryptotree.ipynb",
          "HomomorphicTreeEvaluator": "05_cryptotree.ipynb",
-         "HomomorphicTreeFeaturizer": "05_cryptotree.ipynb"}
+         "HomomorphicTreeFeaturizer": "05_cryptotree.ipynb",
+         "ColumnSelector": "06_preprocessing.ipynb",
+         "Reshaper": "06_preprocessing.ipynb",
+         "Featurizer": "06_preprocessing.ipynb"}
 
 modules = ["activations.py",
            "tree.py",
            "seal_helper.py",
            "polynomials.py",
            "linear.py",
-           "cryptotree.py"]
+           "cryptotree.py",
+           "preprocessing.py"]
 
 doc_url = "https://dhuynh95.github.io/cryptotree/"
 
