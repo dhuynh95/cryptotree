@@ -6,6 +6,7 @@
     "seal_helper": "/seal_helper",
     "polynomials": "/polynomials",
     "linear": "/linear",
-    "cryptotree": "/cryptotree"
+    "cryptotree": "/cryptotree",
+    "preprocessing": "/preprocessing"
   }
 }

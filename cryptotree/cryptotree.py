@@ -140,6 +140,7 @@ class HomomorphicNeuralRandomForest(HomomorphicModel):
 from typing import List
 from functools import partial
 from .tree import NeuralDecisionTree
+from .linear import sum_reduce
 
 class HomomorphicTreeEvaluator:
     """Evaluator which will perform homomorphic computation"""
@@ -147,7 +148,8 @@ class HomomorphicTreeEvaluator:
     def __init__(self, b0: np.ndarray, w1, b1, w2, b2,
                  activation_coeffs: List[float], polynomial_evaluator: Callable,
                  evaluator: seal.Evaluator, encoder: seal.CKKSEncoder,
-                 relin_keys: seal.RelinKeys, galois_keys: seal.GaloisKeys, scale: float):
+                 relin_keys: seal.RelinKeys, galois_keys: seal.GaloisKeys, scale: float,
+                 do_reduction=True):
         """Initializes with the weights used during computation.
 
         Args:
@@ -172,12 +174,17 @@ class HomomorphicTreeEvaluator:
         self.w2_ptx = [self.to_ptx(w) for w in w2]
         self.b2_ptx = [self.to_ptx(b) for b in b2]
 
+        self.n_slot = len(w2[0])
+        self.do_reduction = do_reduction
+
     def __call__(self, ctx: seal.Ciphertext):
 
         # First we add the first bias to do the comparisons
         ctx = self.compare(ctx)
         ctx = self.match(ctx)
         outputs = self.decide(ctx)
+        if self.do_reduction:
+            outputs = self.reduce(outputs)
 
         return outputs
 
@@ -187,7 +194,7 @@ class HomomorphicTreeEvaluator:
         It first adds the thresholds, then compute the activation.
         """
         output = seal.Ciphertext()
-        evaluator.add_plain(ctx, self.b0_ptx, output)
+        self.evaluator.add_plain(ctx, self.b0_ptx, output)
         output = self.activation(output)
         return output
 
@@ -220,12 +227,43 @@ class HomomorphicTreeEvaluator:
             self.evaluator.multiply_plain(ctx, w_ptx, output)
             self.evaluator.rescale_to_next_inplace(output)
 
-            evaluator.mod_switch_to_inplace(b_ptx, output.parms_id())
+            self.evaluator.mod_switch_to_inplace(b_ptx, output.parms_id())
             output.scale = self.scale
 
-            evaluator.add_plain_inplace(output, b_ptx)
+            self.evaluator.add_plain_inplace(output, b_ptx)
             outputs.append(output)
         return outputs
+
+    def reduce(self, outputs: List[seal.Ciphertext]):
+
+        scores = seal.Ciphertext()
+        n = self.encoder.slot_count()
+
+        for i, output in enumerate(outputs):
+            # We reduce each output
+            output = sum_reduce(output, self.evaluator, self.galois_keys, self.n_slot)
+
+            # We create the masks
+            mask = np.zeros(n)
+            mask[0] = 1
+            mask_ptx = seal.Plaintext()
+
+            temp = seal.Ciphertext()
+
+            self.encoder.encode(mask, self.scale, mask_ptx)
+            self.evaluator.mod_switch_to_inplace(mask_ptx, output.parms_id())
+
+            if i == 0:
+                self.evaluator.multiply_plain(output, mask_ptx, scores)
+                self.evaluator.rescale_to_next_inplace(scores)
+                scores.scale = self.scale
+            else:
+                self.evaluator.multiply_plain(output, mask_ptx, temp)
+                self.evaluator.rescale_to_next_inplace(temp)
+                temp.scale = self.scale
+                self.evaluator.rotate_vector_inplace(temp, -i, self.galois_keys)
+                self.evaluator.add_inplace(scores, temp)
+        return scores
 
     def to_ptx(self, array):
         """Pads an array and convert it to a plaintext"""
@@ -251,11 +289,12 @@ class HomomorphicTreeEvaluator:
 class HomomorphicTreeFeaturizer:
     """Featurizer used by the client to encode and encrypt data."""
     def __init__(self, comparator: np.ndarray,
-                 encoder: seal.CKKSEncoder, encryptor: seal.Encryptor, scale: float):
+                 encoder: seal.CKKSEncoder, encryptor: seal.Encryptor, scale: float, use_symmetric_key=False):
         self.comparator = comparator
         self.encryptor = encryptor
         self.encoder = encoder
         self.scale = scale
+        self.use_symmetric_key = use_symmetric_key
 
     def encrypt(self, x: np.ndarray):
         features = x[self.comparator]
@@ -263,11 +302,20 @@ class HomomorphicTreeFeaturizer:
         features = list(features)
 
         ptx = seal.Plaintext()
-        encoder.encode(features, scale, ptx)
+        self.encoder.encode(features, self.scale, ptx)
 
         ctx = seal.Ciphertext()
-        encryptor.encrypt(ptx, ctx)
+        if self.use_symmetric_key:
+            self.encryptor.encrypt_symmetric(ptx, ctx)
+        else:
+            self.encryptor.encrypt(ptx, ctx)
         return ctx
 
     def save(self, path:str):
         pickle.dump(self.comparator, open(path, "wb"))
+
+    @classmethod
+    def load(cls, path:str, encoder: seal.CKKSEncoder,
+             encryptor: seal.Encryptor, scale: float, use_symmetric_key=False):
+        comparator = pickle.load(open(path, "rb"))
+        return cls(comparator, encoder, encryptor, scale, use_symmetric_key)

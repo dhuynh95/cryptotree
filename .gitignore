@@ -141,8 +141,14 @@ checklink/cookies.txt
 
 # Models folders using Fastai
 examples/
-examples/.*ipynb
-
+!examples/.*ipynb
 *.pth
 *.pkl
 seal/
+
+!demo/adult_income/model/*.pkl
+!demo/adult_income/data/*.pkl
+!demo/adult_income/preprocess/*.pkl
+
+*.ctx
+
