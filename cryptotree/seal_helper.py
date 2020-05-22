@@ -86,6 +86,7 @@ def create_seal_globals(globals: dict, poly_modulus_degree: int, moduli: List[in
 
     globals["public_key"] = keygen.public_key()
     globals["secret_key"] = keygen.secret_key()
+
     if use_local:
         globals["relin_keys"] = keygen.relin_keys_local()
         globals["galois_keys"] = keygen.galois_keys_local()
@@ -117,7 +118,7 @@ def append_globals_to_builtins(globals, builtins):
 # Cell
 from pathlib import Path
 
-def save_seal_globals(globals, path:Path = Path("seal")):
+def save_seal_globals(globals, path:Path = Path("seal"), save_pk = False, save_sk = False):
     parms = globals["parms"]
 
     public_key = globals["public_key"]
@@ -130,10 +131,13 @@ def save_seal_globals(globals, path:Path = Path("seal")):
 
     parms.save(str(path/"parms"))
 
-    public_key.save(str(path/"public_key"))
-    secret_key.save(str(path/"secret_key"))
     relin_keys.save(str(path/"relin_keys"))
     galois_keys.save(str(path/"galois_keys"))
+
+    if save_pk:
+        public_key.save(str(path/"public_key"))
+    if save_sk:
+        secret_key.save(str(path/"secret_key"))
 
 def load_seal_globals(globals, path:Path = Path("seal"), load_pk:bool = False, load_sk:bool = False):
     """Loads and populates SEAL globals from saved files."""
