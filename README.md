@@ -30,21 +30,19 @@ As of now, there are two ways to install cryptotree, which is dependent on [TenS
     </li>
 </ol>
 
-## Examples
+## Experiments
 
-A full example of the Adult income dataset can be found in https://github.com/dhuynh95/cryptotree/blob/master/examples/adult_dataset.ipynb.
+The experiments from the paper "Cryptotree : fast and accurate predictions on encrypted structured data" can be found in the notebook `examples/adult_income/cryptotree_result_reproduction.ipynb`.
 
-It can be run easily with the Docker image, just by running the following command after the image has been successfully built : `sudo docker run -p 8888:8888 cryptotree /bin/sh /cryptotree/examples/adult_income/run_jupyter_server.sh`. This command simply performs port forwarding for the Jupyter server which will be launched. 
+We recommend using the Docker setup created previously to make sure everything is setup. In that case, the commands to run once the Docker image is built are : 
 
-## Paper
+- `sudo docker run -it -p 8888:8888 cryptotree` to run the built image
+- `pip3 install jupyter notebook` to install Jupyter notebooks
+- `jupyter notebook --ip 0.0.0.0 --port 8888 --allow-root` once Jupyter is installed. The options allow to forward the Docker Jupyter to be accessible.
 
-TBD
+Then simply open `examples/adult_income/cryptotree_result_reproduction.ipynb`.
 
 ## TODO
 
 - Implement Baby step, Giant step for homomorphic polynomial evaluation
 - Find a way to fine tune the comparator and the matcher of the neural decision trees, while preserving the invariant which is having an output in $[-1,1]$
-
-## Contributors
-
-- [D. Huynh](https://github.com/dhuynh95)

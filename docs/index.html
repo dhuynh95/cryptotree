@@ -67,27 +67,20 @@ description: "Cryptotree is an implementation of Neural Random Forests, and Homo
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Examples">Examples<a class="anchor-link" href="#Examples"> </a></h2>
+<h2 id="Experiments">Experiments<a class="anchor-link" href="#Experiments"> </a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>A full example of the Adult income dataset can be found in <a href="https://github.com/dhuynh95/cryptotree/blob/master/examples/adult_dataset.ipynb">https://github.com/dhuynh95/cryptotree/blob/master/examples/adult_dataset.ipynb</a>.</p>
-<p>It can be run easily with the Docker image, just by running the following command after the image has been successfully built : <code>sudo docker run -p 8888:8888 cryptotree /bin/sh /cryptotree/examples/adult_income/run_jupyter_server.sh</code>. This command simply performs port forwarding for the Jupyter server which will be launched.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Paper">Paper<a class="anchor-link" href="#Paper"> </a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>TBD</p>
+<p>The experiments from the paper "Cryptotree : fast and accurate predictions on encrypted structured data" can be found in the notebook <code>examples/adult_income/cryptotree_result_reproduction.ipynb</code>.</p>
+<p>We recommend using the Docker setup created previously to make sure everything is setup. In that case, the commands to run once the Docker image is built are :</p>
+<ul>
+<li><code>sudo docker run -it -p 8888:8888 cryptotree</code> to run the built image</li>
+<li><code>pip3 install jupyter notebook</code> to install Jupyter notebooks</li>
+<li><code>jupyter notebook --ip 0.0.0.0 --port 8888 --allow-root</code> once Jupyter is installed. The options allow to forward the Docker Jupyter to be accessible.</li>
+</ul>
+<p>Then simply open <code>examples/adult_income/cryptotree_result_reproduction.ipynb</code>.</p>
 
 </div>
 </div>
@@ -97,21 +90,6 @@ description: "Cryptotree is an implementation of Neural Random Forests, and Homo
 <h2 id="TODO">TODO<a class="anchor-link" href="#TODO"> </a></h2><ul>
 <li>Implement Baby step, Giant step for homomorphic polynomial evaluation</li>
 <li>Find a way to fine tune the comparator and the matcher of the neural decision trees, while preserving the invariant which is having an output in $[-1,1]$</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Contributors">Contributors<a class="anchor-link" href="#Contributors"> </a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li><a href="https://github.com/dhuynh95">D. Huynh</a></li>
 </ul>
 
 </div>
