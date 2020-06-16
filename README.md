@@ -38,7 +38,7 @@ It can be run easily with the Docker image, just by running the following comman
 
 ## Paper
 
-https://arxiv.org/abs/2006.08299
+<a href="https://arxiv.org/abs/2006.08299">Cryptotree: fast and accurate predictions on encrypted structured data</a>
 
 ## TODO
 
