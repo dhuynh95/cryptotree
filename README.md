@@ -38,7 +38,7 @@ It can be run easily with the Docker image, just by running the following comman
 
 ## Paper
 
-TBD
+https://arxiv.org/abs/2006.08299
 
 ## TODO
 
