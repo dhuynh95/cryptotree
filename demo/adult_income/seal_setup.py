@@ -10,4 +10,4 @@ from config import poly_modulus_degree, moduli, PRECISION_BITS
 
 if __name__ == "__main__":
     create_seal_globals(globals(), poly_modulus_degree, moduli, PRECISION_BITS, use_local=False)
-    save_seal_globals(globals())
+    save_seal_globals(globals(), save_pk=True, save_sk=True)
