@@ -17,6 +17,7 @@ from typing import List, Union
 
 # Cell
 def chebyshev_approximation(f, dilatation_factor=50, polynomial_degree=25, bound=1, convertToTensor=True):
+    """Polynomial approximation of f using Chebyshev approximation."""
     if convertToTensor:
         f_a = lambda x: f(torch.tensor(x*dilatation_factor))
     else:
@@ -29,11 +30,14 @@ def chebyshev_approximation(f, dilatation_factor=50, polynomial_degree=25, bound
 
 def polynomial_approximation_coefficients(f, dilatation_factor=50, polynomial_degree=25,
                                           bound=1, convertToTensor=True):
+    """Returns the coefficient of the polynomial approximation of f
+    in the canonical basis."""
     p,_ = chebyshev_approximation(f, dilatation_factor, polynomial_degree, bound, convertToTensor)
 
     return Polynomial.cast(p).coef
 
 def plot_graph_function_approximation(f, dilatation_factor=50, polynomial_degree=25, bound=1, convertToTensor=True):
+    """Provides visualization of polynomial approximation."""
 
     p, f_a = chebyshev_approximation(f, dilatation_factor, polynomial_degree, bound, convertToTensor)
 
